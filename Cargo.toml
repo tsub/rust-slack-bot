@@ -1,0 +1,6 @@
+[package]
+name = "rust-slack-bot"
+version = "0.1.0"
+authors = ["tsub <tsubasatakayama511@gmail.com>"]
+
+[dependencies]
