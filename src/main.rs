@@ -10,11 +10,26 @@ impl slack::EventHandler for MyHandler {
     fn on_event(&mut self, cli: &RtmClient, event: Event) {
         println!("on_event(event: {:?})", event);
 
-        let message = match event {
+        let message = match event.clone() {
             Event::Message(message) => message,
             _ => return
         };
-        let message_standard = match *message {
+        self.handle_message(*message, cli, &event);
+    }
+
+    fn on_close(&mut self, cli: &RtmClient) {
+        println!("on_close");
+    }
+
+    fn on_connect(&mut self, cli: &RtmClient) {
+        println!("on_connect");
+    }
+}
+
+#[allow(unused_variables)]
+impl MyHandler {
+    fn handle_message(&mut self, message: Message, cli: &RtmClient, event: &Event) {
+        let message_standard = match message {
             Message::Standard(message_standard) => message_standard,
             _ => return
         };
@@ -32,14 +47,6 @@ impl slack::EventHandler for MyHandler {
         }
 
         let _ = cli.sender().send_message(&message_standard.channel.unwrap(), "Hi!");
-    }
-
-    fn on_close(&mut self, cli: &RtmClient) {
-        println!("on_close");
-    }
-
-    fn on_connect(&mut self, cli: &RtmClient) {
-        println!("on_connect");
     }
 }
 
