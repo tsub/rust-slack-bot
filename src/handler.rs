@@ -1,11 +1,11 @@
 extern crate slack;
 
-use self::slack::{Event, Message, RtmClient};
+use self::slack::{Event, EventHandler, Message, RtmClient};
 
 pub struct Handler;
 
 #[allow(unused_variables)]
-impl slack::EventHandler for Handler {
+impl EventHandler for Handler {
     fn on_event(&mut self, cli: &RtmClient, event: Event) {
         println!("on_event(event: {:?})", event);
 
