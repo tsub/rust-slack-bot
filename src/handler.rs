@@ -1,5 +1,6 @@
 extern crate slack;
 
+use action;
 use self::slack::{Event, EventHandler, Message, RtmClient};
 
 pub struct Handler;
@@ -45,14 +46,6 @@ impl Handler {
             return
         }
 
-        self.respond_hi(&bot_id, &text, &channel, &cli);
-    }
-
-    fn respond_hi(&mut self, bot_id: &str, text: &str, channel: &str, cli: &RtmClient) {
-        let pattern = format!("<@{}> {}", bot_id, "hi");
-
-        if text.contains(&pattern) {
-            let _ = cli.sender().send_message(channel, "Hi!");
-        }
+        action::respond_hi(&bot_id, &text, &channel, &cli);
     }
 }
