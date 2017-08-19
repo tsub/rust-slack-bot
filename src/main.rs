@@ -32,8 +32,9 @@ impl MyHandler {
             Message::Standard(message_standard) => message_standard,
             _ => return
         };
+        let channel: String = message_standard.channel.unwrap();
 
-        let bot_id = cli.start_response().slf.as_ref().unwrap().id.as_ref().unwrap();
+        let bot_id: &str = cli.start_response().slf.as_ref().unwrap().id.as_ref().unwrap();
         if &message_standard.user.unwrap() == bot_id {
             println!("Is own message");
             return
@@ -45,7 +46,15 @@ impl MyHandler {
             return
         }
 
-        let _ = cli.sender().send_message(&message_standard.channel.unwrap(), "Hi!");
+        self.respond_hi(&bot_id, &text, &channel, &cli);
+    }
+
+    fn respond_hi(&mut self, bot_id: &str, text: &str, channel: &str, cli: &RtmClient) {
+        let pattern = format!("<@{}> {}", bot_id, "hi");
+
+        if text.contains(&pattern) {
+            let _ = cli.sender().send_message(channel, "Hi!");
+        }
     }
 }
 
