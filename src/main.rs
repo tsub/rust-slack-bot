@@ -10,11 +10,10 @@ impl slack::EventHandler for MyHandler {
     fn on_event(&mut self, cli: &RtmClient, event: Event) {
         println!("on_event(event: {:?})", event);
 
-        let message = match event.clone() {
-            Event::Message(message) => message,
+        match event.clone() {
+            Event::Message(message) => self.handle_message(*message, cli, &event),
             _ => return
         };
-        self.handle_message(*message, cli, &event);
     }
 
     fn on_close(&mut self, cli: &RtmClient) {
